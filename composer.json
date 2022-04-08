@@ -1,0 +1,16 @@
+{
+    "name": "carteni/rss-reader",
+    "require": {
+        "symfony/console": "^6.0",
+        "symfony/var-dumper": "^6.0",
+      "ext-simplexml": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "RSSReader\\": "src"
+        },
+        "classmap": [
+            "lib/idiorm.php"
+        ]
+    }
+}
