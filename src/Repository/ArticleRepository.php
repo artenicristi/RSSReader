@@ -7,13 +7,28 @@ use RSSReader\Entity\Resource;
 
 class ArticleRepository
 {
+    /**
+     * @param Resource $resource
+     * @param int $page
+     * @param int $limit
+     * @return Article[]
+     */
     public function getArticlesByResource(Resource $resource, int $page, int $limit): array
     {
-        return \ORM::forTable('articles')
+        $articles = \ORM::forTable('articles')
             ->where('resource_id', $resource->getId())
             ->offset(($page - 1) * $limit)
             ->limit($limit)
             ->findArray();
+
+        return array_map(fn(array $data) => new Article(
+            $data['id'],
+            $data['url'],
+            $data['title'],
+            $data['content'],
+            $data['resource_id'],
+            $data['created_at']
+        ), $articles);
     }
 
     public function saveArticle(Article $dataArticle): bool

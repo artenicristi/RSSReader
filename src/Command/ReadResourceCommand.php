@@ -37,8 +37,32 @@ class ReadResourceCommand extends Command
             $input->getArgument('limit')
         );
 
-        dump($articles);
+        $index = 0;
+        $cmd = null;
+        do{
+            if ($cmd === 'q'){
+                break;
+            }if ($cmd === '>'){
+                $index++;
+            }if ($cmd === '<'){
+                $index--;
+            }
+            $output->writeln("<info>### {$articles[$index]->getTitle()}</info>");
+            $output->writeln("{$articles[$index]->getContent()}");
+        }while($cmd = $this->waitForInput());
 
         return Command::SUCCESS;
+    }
+
+    /**
+     * @return false|string
+     */
+    protected function waitForInput(): string|false
+    {
+        $val = readline("(<>)");
+        if (empty($val)){
+            $val = '>';
+        }
+        return $val;
     }
 }

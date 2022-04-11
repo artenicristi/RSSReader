@@ -25,22 +25,18 @@ class FetchResourcesCommand extends Command
         $resources = $resourceRepository->getResources();
 
         foreach ($resources as $resource) {
-            $xml = simplexml_load_file($resource->getUrl())->children()->children();
-            $index = 0;
-            $items = [];
-
-            while($xml->item[$index]) {
-                $items[] = (array)$xml->item[$index ++];
-            }
+            $output->writeln("Loading '{$resource->getName()}'");
+            $xml = simplexml_load_file($resource->getUrl());
+            $items = $xml->xpath( '//channel/item');
 
             foreach ($items as $item) {
                 $article = new Article(
                     $articleRepository->getMaxIdArticle(),
-                    $item['link'],
-                    $item['title'],
-                    (string)$item['description'],
+                    $item->link,
+                    $item->title,
+                    strip_tags($item->description ?? ''),
                     $resource->getId(),
-                    $item['pubDate']
+                    $item->pubDate
                 );
 
                 if (!$articleRepository->saveArticle($article)) {
@@ -49,7 +45,6 @@ class FetchResourcesCommand extends Command
                     $output->writeln("Article: {$article->getUrl()} saved");
                 }
             }
-
         }
 
         return Command::SUCCESS;
