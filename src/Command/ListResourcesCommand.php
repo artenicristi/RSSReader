@@ -22,6 +22,11 @@ class ListResourcesCommand extends Command
 
         $output->writeln("<info>Resources:</info>");
 
+        $resources = $repo->getResources();
+        if (empty($resources)){
+            $output->writeln("Nothing yet...");
+        }
+
         foreach ($repo->getResources() as $resource) {
             $output->writeln(" - <info>{$resource->getName()} </info> from {$resource->getUrl()}");
         }

@@ -21,8 +21,8 @@ class DeployCommand extends Command
     {
         if ($input->getOption('fresh')) {
             $output->writeln('<info>Drop old tables</info>');
-            ORM::raw_execute("DROP TABLE articles;");
-            ORM::raw_execute("DROP TABLE resources;");
+            ORM::raw_execute("DROP TABLE IF EXISTS articles;");
+            ORM::raw_execute("DROP TABLE IF EXISTS resources;");
         }
 
         ORM::raw_execute(

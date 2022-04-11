@@ -27,7 +27,7 @@ class AddResourceCommand extends Command
             $resourceRepository->getMaxIdResource(),
             $input->getArgument('name'),
             $input->getArgument('url'),
-            (string)simplexml_load_file($input->getArgument('url'))->children()->children()->lastBuildDate
+            date('d-M-Y H:i:s', time())
         );
 
         if (!$resourceRepository->saveResource($resource)) {
