@@ -47,6 +47,13 @@ class ReadResourceCommand extends Command
             }if ($cmd === '<'){
                 $index--;
             }
+            if ($index === count($articles)){
+                $index = 0;
+            }
+            if ($index === -1) {
+                $index = count($articles) - 1;
+            }
+
             $output->writeln("<info>### {$articles[$index]->getTitle()}</info>");
             $output->writeln("{$articles[$index]->getContent()}");
         }while($cmd = $this->waitForInput());
